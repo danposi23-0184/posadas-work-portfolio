@@ -226,13 +226,13 @@ function Hero() {
       {/* Dot grid background */}
       <div className="absolute inset-0 dot-grid opacity-30" />
 
-      {/* Decorative large monogram */}
-      <div className="absolute right-[-5%] top-1/2 -translate-y-1/2 select-none pointer-events-none">
+      {/* Decorative large monogram (behind photo card) */}
+      <div className="absolute right-[-2%] sm:right-[5%] top-1/2 -translate-y-1/2 select-none pointer-events-none opacity-40">
         <motion.span
           initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          animate={{ opacity: 0.4, scale: 1 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-          className="text-[clamp(8rem,25vw,20rem)] font-bold tracking-tighter leading-none text-[oklch(0.11_0_0)]"
+          className="text-[clamp(6rem,18vw,16rem)] font-bold tracking-tighter leading-none text-[oklch(0.11_0_0)]"
           style={{
             WebkitTextStroke: "1px oklch(0.16_0_0)",
           }}
@@ -245,111 +245,148 @@ function Hero() {
         style={{ opacity, y }}
         className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 pt-24 pb-16 w-full"
       >
-        {/* Photo card + Status badge row */}
-        <div className="flex items-center gap-5 mb-8">
+        {/* Two-column layout: text left, photo card right */}
+        <div className="grid lg:grid-cols-[1fr_240px] xl:grid-cols-[1fr_280px] gap-10 lg:gap-14 items-center">
+          {/* Left — text content */}
+          <div>
+            {/* Status badge + location */}
+            <div className="flex items-center gap-4 mb-8">
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.08 }}
+                className="flex items-center gap-2.5"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+                <span className="font-mono text-xs tracking-wider text-[oklch(0.55_0_0)]">
+                  Available for work
+                </span>
+              </motion.div>
+              <span className="text-[oklch(0.20_0_0)]">|</span>
+              <motion.p
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.14 }}
+                className="font-mono text-xs tracking-wider text-[oklch(0.40_0_0)]"
+              >
+                Angeles City, Pampanga, Philippines
+              </motion.p>
+            </div>
+
+            {/* Name */}
+            <div className="mb-6">
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
+              >
+                Daniel{" "}
+                <span className="text-[oklch(0.78_0.12_85)]">Posadas</span>
+              </motion.h1>
+            </div>
+
+            {/* Role line */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-lg sm:text-xl text-[oklch(0.62_0_0)] max-w-lg mb-10 leading-relaxed"
+            >
+              CS student who builds things for the web, edits content that
+              people actually read, and keeps customers from leaving.
+            </motion.p>
+
+            {/* Contact row */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="flex flex-wrap items-center gap-3"
+            >
+              <a
+                href="mailto:dposadas003@gmail.com"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[oklch(0.78_0.12_85)] text-[oklch(0.1_0_0)] text-sm font-medium rounded-md hover:brightness-110 transition-all"
+              >
+                <Mail size={15} />
+                Email Me
+              </a>
+              <a
+                href="https://linkedin.com/in/daniel-posadas-4237582b9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 border border-[oklch(0.22_0_0)] text-[oklch(0.85_0_0)] text-sm font-medium rounded-md hover:border-[oklch(0.78_0.12_85/40%)] hover:text-[oklch(0.78_0.12_85)] transition-all"
+              >
+                <Linkedin size={15} />
+                LinkedIn
+                <ArrowUpRight size={12} className="opacity-50" />
+              </a>
+              <a
+                href="tel:09917460621"
+                className="inline-flex items-center gap-2 px-5 py-2.5 border border-[oklch(0.22_0_0)] text-[oklch(0.85_0_0)] text-sm font-medium rounded-md hover:border-[oklch(0.78_0.12_85/40%)] hover:text-[oklch(0.78_0.12_85)] transition-all"
+              >
+                <Phone size={15} />
+                0991 746 0621
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right — photo card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-            className="shrink-0"
+            initial={{ opacity: 0, y: 24, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:flex justify-center"
           >
-            {profilePhoto ? (
-              <img
-                src={profilePhoto}
-                alt="Daniel Posadas"
-                className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] rounded-full object-cover ring-2 ring-[oklch(0.78_0.12_85/50%)] ring-offset-2 ring-offset-[oklch(0.07_0_0)]"
-              />
-            ) : (
-              <div className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] rounded-full bg-[oklch(0.13_0_0)] border border-[oklch(0.20_0_0)] flex items-center justify-center ring-2 ring-[oklch(0.78_0.12_85/25%)] ring-offset-2 ring-offset-[oklch(0.07_0_0)]">
-                <span className="text-xl sm:text-2xl font-bold text-[oklch(0.78_0.12_85)] font-mono select-none">
-                  DP
+            <div className="relative w-[200px] xl:w-[240px] rounded-xl overflow-hidden border border-[oklch(0.20_0_0)] bg-[oklch(0.10_0_0)]">
+              {/* Gold accent top bar */}
+              <div className="h-1 bg-[oklch(0.78_0.12_85)]" />
+
+              {profilePhoto ? (
+                <img
+                  src={profilePhoto}
+                  alt="Daniel Posadas"
+                  className="w-full aspect-[3/4] object-cover"
+                />
+              ) : (
+                <div className="w-full aspect-[3/4] flex flex-col items-center justify-center gap-4 bg-[oklch(0.10_0_0)]">
+                  <div className="w-20 h-20 rounded-full bg-[oklch(0.15_0_0)] border border-[oklch(0.22_0_0)] flex items-center justify-center">
+                    <span className="text-3xl font-bold text-[oklch(0.78_0.12_85)] font-mono select-none">
+                      DP
+                    </span>
+                  </div>
+                  <div className="text-center px-4">
+                    <p className="text-sm font-medium text-[oklch(0.75_0_0)]">Daniel Posadas</p>
+                    <p className="text-xs text-[oklch(0.45_0_0)] mt-1">CS Student & Developer</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-[oklch(0.40_0_0)]">
+                    <MapPin size={10} />
+                    <span className="font-mono text-[10px] tracking-wider">Pampanga, PH</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Bottom info bar */}
+              <div className="px-4 py-3 border-t border-[oklch(0.16_0_0)] flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+                  </span>
+                  <span className="text-[10px] font-mono text-[oklch(0.45_0_0)] tracking-wider">
+                    OPEN TO WORK
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono text-[oklch(0.30_0_0)]">
+                  2026
                 </span>
               </div>
-            )}
+            </div>
           </motion.div>
-
-          <div className="flex flex-col gap-1.5">
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.12 }}
-              className="flex items-center gap-2.5"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-              </span>
-              <span className="font-mono text-xs tracking-wider text-[oklch(0.55_0_0)]">
-                Available for work
-              </span>
-            </motion.div>
-            <motion.p
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.18 }}
-              className="font-mono text-xs tracking-wider text-[oklch(0.40_0_0)]"
-            >
-              Angeles City, Pampanga, Philippines
-            </motion.p>
-          </div>
         </div>
-
-        {/* Name */}
-        <div className="mb-6">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
-          >
-            Daniel{" "}
-            <span className="text-[oklch(0.78_0.12_85)]">Posadas</span>
-          </motion.h1>
-        </div>
-
-        {/* Role line */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-lg sm:text-xl text-[oklch(0.62_0_0)] max-w-lg mb-10 leading-relaxed"
-        >
-          CS student who builds things for the web, edits content that
-          people actually read, and keeps customers from leaving.
-        </motion.p>
-
-        {/* Contact row */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.45 }}
-          className="flex flex-wrap items-center gap-3"
-        >
-          <a
-            href="mailto:dposadas003@gmail.com"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[oklch(0.78_0.12_85)] text-[oklch(0.1_0_0)] text-sm font-medium rounded-md hover:brightness-110 transition-all"
-          >
-            <Mail size={15} />
-            Email Me
-          </a>
-          <a
-            href="https://linkedin.com/in/daniel-posadas-4237582b9"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 border border-[oklch(0.22_0_0)] text-[oklch(0.85_0_0)] text-sm font-medium rounded-md hover:border-[oklch(0.78_0.12_85/40%)] hover:text-[oklch(0.78_0.12_85)] transition-all"
-          >
-            <Linkedin size={15} />
-            LinkedIn
-            <ArrowUpRight size={12} className="opacity-50" />
-          </a>
-          <a
-            href="tel:09917460621"
-            className="inline-flex items-center gap-2 px-5 py-2.5 border border-[oklch(0.22_0_0)] text-[oklch(0.85_0_0)] text-sm font-medium rounded-md hover:border-[oklch(0.78_0.12_85/40%)] hover:text-[oklch(0.78_0.12_85)] transition-all"
-          >
-            <Phone size={15} />
-            0991 746 0621
-          </a>
-        </motion.div>
 
       </motion.div>
 

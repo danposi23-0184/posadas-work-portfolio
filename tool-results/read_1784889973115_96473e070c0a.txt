@@ -1,0 +1,922 @@
+     1→"use client";
+     2→
+     3→import { motion, useInView, useScroll, useTransform } from "framer-motion";
+     4→import { useRef, useState, useEffect } from "react";
+     5→import {
+     6→  Mail,
+     7→  Phone,
+     8→  MapPin,
+     9→  Linkedin,
+    10→  ExternalLink,
+    11→  ChevronDown,
+    12→  ArrowUpRight,
+    13→  Menu,
+    14→  X,
+    15→  Briefcase,
+    16→  Code2,
+    17→  GraduationCap,
+    18→  Award,
+    19→  FileText,
+    20→  MonitorSmartphone,
+    21→  Palette,
+    22→  Database,
+    23→  Shield,
+    24→  Globe,
+    25→  Layers,
+    26→} from "lucide-react";
+    27→
+    28→/* ───────────────────────────────────────
+    29→   Animation helpers
+    30→   ─────────────────────────────────────── */
+    31→
+    32→function FadeIn({
+    33→  children,
+    34→  delay = 0,
+    35→  direction = "up",
+    36→  className = "",
+    37→}: {
+    38→  children: React.ReactNode;
+    39→  delay?: number;
+    40→  direction?: "up" | "down" | "left" | "right";
+    41→  className?: string;
+    42→}) {
+    43→  const ref = useRef(null);
+    44→  const isInView = useInView(ref, { once: true, margin: "-60px" });
+    45→
+    46→  const dir = {
+    47→    up: { y: 28, x: 0 },
+    48→    down: { y: -28, x: 0 },
+    49→    left: { y: 0, x: 28 },
+    50→    right: { y: 0, x: -28 },
+    51→  }[direction];
+    52→
+    53→  return (
+    54→    <motion.div
+    55→      ref={ref}
+    56→      initial={{ opacity: 0, ...dir }}
+    57→      animate={isInView ? { opacity: 1, y: 0, x: 0 } : {}}
+    58→      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+    59→      className={className}
+    60→    >
+    61→      {children}
+    62→    </motion.div>
+    63→  );
+    64→}
+    65→
+    66→function StaggerContainer({
+    67→  children,
+    68→  className = "",
+    69→}: {
+    70→  children: React.ReactNode;
+    71→  className?: string;
+    72→}) {
+    73→  const ref = useRef(null);
+    74→  const isInView = useInView(ref, { once: true, margin: "-40px" });
+    75→
+    76→  return (
+    77→    <motion.div
+    78→      ref={ref}
+    79→      initial="hidden"
+    80→      animate={isInView ? "visible" : "hidden"}
+    81→      variants={{
+    82→        visible: { transition: { staggerChildren: 0.08 } },
+    83→        hidden: {},
+    84→      }}
+    85→      className={className}
+    86→    >
+    87→      {children}
+    88→    </motion.div>
+    89→  );
+    90→}
+    91→
+    92→const staggerItem = {
+    93→  hidden: { opacity: 0, y: 16 },
+    94→  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+    95→};
+    96→
+    97→/* ───────────────────────────────────────
+    98→   Section number label
+    99→   ─────────────────────────────────────── */
+   100→
+   101→function SectionLabel({ number, title }: { number: string; title: string }) {
+   102→  return (
+   103→    <FadeIn>
+   104→      <div className="flex items-center gap-4 mb-10">
+   105→        <span className="font-mono text-xs tracking-widest text-[oklch(0.45_0_0)]">
+   106→          {number}
+   107→        </span>
+   108→        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h2>
+   109→        <div className="flex-1 h-px bg-[oklch(0.18_0_0)]" />
+   110→      </div>
+   111→    </FadeIn>
+   112→  );
+   113→}
+   114→
+   115→/* ───────────────────────────────────────
+   116→   NAVIGATION
+   117→   ─────────────────────────────────────── */
+   118→
+   119→function Navigation() {
+   120→  const [scrolled, setScrolled] = useState(false);
+   121→  const [menuOpen, setMenuOpen] = useState(false);
+   122→
+   123→  useEffect(() => {
+   124→    const handleScroll = () => setScrolled(window.scrollY > 40);
+   125→    window.addEventListener("scroll", handleScroll, { passive: true });
+   126→    return () => window.removeEventListener("scroll", handleScroll);
+   127→  }, []);
+   128→
+   129→  const links = [
+   130→    { label: "About", href: "#about" },
+   131→    { label: "Experience", href: "#experience" },
+   132→    { label: "Projects", href: "#projects" },
+   133→    { label: "Skills", href: "#skills" },
+   134→    { label: "Education", href: "#education" },
+   135→  ];
+   136→
+   137→  return (
+   138→    <motion.header
+   139→      initial={{ y: -20, opacity: 0 }}
+   140→      animate={{ y: 0, opacity: 1 }}
+   141→      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+   142→      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+   143→        scrolled
+   144→          ? "bg-[oklch(0.07_0_0/85%)] backdrop-blur-md border-b border-[oklch(0.15_0_0)]"
+   145→          : "bg-transparent"
+   146→      }`}
+   147→    >
+   148→      <nav className="max-w-6xl mx-auto px-6 sm:px-8 h-16 flex items-center justify-between">
+   149→        <a
+   150→          href="#"
+   151→          className="font-mono text-sm tracking-wider text-[oklch(0.78_0.12_85)] hover:opacity-80 transition-opacity"
+   152→        >
+   153→          DP
+   154→        </a>
+   155→
+   156→        {/* Desktop nav */}
+   157→        <div className="hidden md:flex items-center gap-8">
+   158→          {links.map((link) => (
+   159→            <a
+   160→              key={link.href}
+   161→              href={link.href}
+   162→              className="text-sm text-[oklch(0.62_0_0)] hover:text-[oklch(0.96_0_0)] accent-underline transition-colors"
+   163→            >
+   164→              {link.label}
+   165→            </a>
+   166→          ))}
+   167→        </div>
+   168→
+   169→        {/* Mobile hamburger */}
+   170→        <button
+   171→          onClick={() => setMenuOpen(!menuOpen)}
+   172→          className="md:hidden text-[oklch(0.78_0_0)] p-2"
+   173→          aria-label="Toggle menu"
+   174→        >
+   175→          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+   176→        </button>
+   177→      </nav>
+   178→
+   179→      {/* Mobile menu */}
+   180→      {menuOpen && (
+   181→        <motion.div
+   182→          initial={{ opacity: 0, height: 0 }}
+   183→          animate={{ opacity: 1, height: "auto" }}
+   184→          exit={{ opacity: 0, height: 0 }}
+   185→          className="md:hidden bg-[oklch(0.07_0_0/95%)] backdrop-blur-md border-b border-[oklch(0.15_0_0)]"
+   186→        >
+   187→          <div className="px-6 py-4 flex flex-col gap-4">
+   188→            {links.map((link) => (
+   189→              <a
+   190→                key={link.href}
+   191→                href={link.href}
+   192→                onClick={() => setMenuOpen(false)}
+   193→                className="text-sm text-[oklch(0.62_0_0)] hover:text-[oklch(0.96_0_0)] transition-colors"
+   194→              >
+   195→                {link.label}
+   196→              </a>
+   197→            ))}
+   198→          </div>
+   199→        </motion.div>
+   200→      )}
+   201→    </motion.header>
+   202→  );
+   203→}
+   204→
+   205→/* ───────────────────────────────────────
+   206→   HERO
+   207→   ─────────────────────────────────────── */
+   208→
+   209→function Hero() {
+   210→  const heroRef = useRef(null);
+   211→  const { scrollYProgress } = useScroll({
+   212→    target: heroRef,
+   213→    offset: ["start start", "end start"],
+   214→  });
+   215→  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+   216→  const y = useTransform(scrollYProgress, [0, 0.5], [0, 60]);
+   217→
+   218→  // ← Replace this string with your actual image path, e.g. "/my-photo.jpg" in /public
+   219→  const profilePhoto = "";
+   220→
+   221→  return (
+   222→    <section
+   223→      ref={heroRef}
+   224→      className="relative min-h-screen flex items-center overflow-hidden"
+   225→    >
+   226→      {/* Dot grid background */}
+   227→      <div className="absolute inset-0 dot-grid opacity-30" />
+   228→
+   229→      {/* Decorative large monogram */}
+   230→      <div className="absolute right-[-5%] top-1/2 -translate-y-1/2 select-none pointer-events-none">
+   231→        <motion.span
+   232→          initial={{ opacity: 0, scale: 0.9 }}
+   233→          animate={{ opacity: 1, scale: 1 }}
+   234→          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+   235→          className="text-[clamp(8rem,25vw,20rem)] font-bold tracking-tighter leading-none text-[oklch(0.11_0_0)]"
+   236→          style={{
+   237→            WebkitTextStroke: "1px oklch(0.16_0_0)",
+   238→          }}
+   239→        >
+   240→          DP
+   241→        </motion.span>
+   242→      </div>
+   243→
+   244→      <motion.div
+   245→        style={{ opacity, y }}
+   246→        className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 pt-24 pb-16 w-full"
+   247→      >
+   248→        {/* Photo card + Status badge row */}
+   249→        <div className="flex items-center gap-5 mb-8">
+   250→          <motion.div
+   251→            initial={{ opacity: 0, scale: 0.85 }}
+   252→            animate={{ opacity: 1, scale: 1 }}
+   253→            transition={{ duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+   254→            className="shrink-0"
+   255→          >
+   256→            {profilePhoto ? (
+   257→              <img
+   258→                src={profilePhoto}
+   259→                alt="Daniel Posadas"
+   260→                className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] rounded-full object-cover ring-2 ring-[oklch(0.78_0.12_85/50%)] ring-offset-2 ring-offset-[oklch(0.07_0_0)]"
+   261→              />
+   262→            ) : (
+   263→              <div className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] rounded-full bg-[oklch(0.13_0_0)] border border-[oklch(0.20_0_0)] flex items-center justify-center ring-2 ring-[oklch(0.78_0.12_85/25%)] ring-offset-2 ring-offset-[oklch(0.07_0_0)]">
+   264→                <span className="text-xl sm:text-2xl font-bold text-[oklch(0.78_0.12_85)] font-mono select-none">
+   265→                  DP
+   266→                </span>
+   267→              </div>
+   268→            )}
+   269→          </motion.div>
+   270→
+   271→          <div className="flex flex-col gap-1.5">
+   272→            <motion.div
+   273→              initial={{ opacity: 0, y: 8 }}
+   274→              animate={{ opacity: 1, y: 0 }}
+   275→              transition={{ duration: 0.5, delay: 0.12 }}
+   276→              className="flex items-center gap-2.5"
+   277→            >
+   278→              <span className="relative flex h-2 w-2">
+   279→                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+   280→                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+   281→              </span>
+   282→              <span className="font-mono text-xs tracking-wider text-[oklch(0.55_0_0)]">
+   283→                Available for work
+   284→              </span>
+   285→            </motion.div>
+   286→            <motion.p
+   287→              initial={{ opacity: 0, y: 6 }}
+   288→              animate={{ opacity: 1, y: 0 }}
+   289→              transition={{ duration: 0.5, delay: 0.18 }}
+   290→              className="font-mono text-xs tracking-wider text-[oklch(0.40_0_0)]"
+   291→            >
+   292→              Angeles City, Pampanga, Philippines
+   293→            </motion.p>
+   294→          </div>
+   295→        </div>
+   296→
+   297→        {/* Name */}
+   298→        <div className="mb-6">
+   299→          <motion.h1
+   300→            initial={{ opacity: 0, y: 30 }}
+   301→            animate={{ opacity: 1, y: 0 }}
+   302→            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+   303→            className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
+   304→          >
+   305→            Daniel{" "}
+   306→            <span className="text-[oklch(0.78_0.12_85)]">Posadas</span>
+   307→          </motion.h1>
+   308→        </div>
+   309→
+   310→        {/* Role line */}
+   311→        <motion.p
+   312→          initial={{ opacity: 0, y: 20 }}
+   313→          animate={{ opacity: 1, y: 0 }}
+   314→          transition={{ duration: 0.6, delay: 0.3 }}
+   315→          className="text-lg sm:text-xl text-[oklch(0.62_0_0)] max-w-lg mb-10 leading-relaxed"
+   316→        >
+   317→          CS student who builds things for the web, edits content that
+   318→          people actually read, and keeps customers from leaving.
+   319→        </motion.p>
+   320→
+   321→        {/* Contact row */}
+   322→        <motion.div
+   323→          initial={{ opacity: 0, y: 16 }}
+   324→          animate={{ opacity: 1, y: 0 }}
+   325→          transition={{ duration: 0.6, delay: 0.45 }}
+   326→          className="flex flex-wrap items-center gap-3"
+   327→        >
+   328→          <a
+   329→            href="mailto:dposadas003@gmail.com"
+   330→            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[oklch(0.78_0.12_85)] text-[oklch(0.1_0_0)] text-sm font-medium rounded-md hover:brightness-110 transition-all"
+   331→          >
+   332→            <Mail size={15} />
+   333→            Email Me
+   334→          </a>
+   335→          <a
+   336→            href="https://linkedin.com/in/daniel-posadas-4237582b9"
+   337→            target="_blank"
+   338→            rel="noopener noreferrer"
+   339→            className="inline-flex items-center gap-2 px-5 py-2.5 border border-[oklch(0.22_0_0)] text-[oklch(0.85_0_0)] text-sm font-medium rounded-md hover:border-[oklch(0.78_0.12_85/40%)] hover:text-[oklch(0.78_0.12_85)] transition-all"
+   340→          >
+   341→            <Linkedin size={15} />
+   342→            LinkedIn
+   343→            <ArrowUpRight size={12} className="opacity-50" />
+   344→          </a>
+   345→          <a
+   346→            href="tel:09917460621"
+   347→            className="inline-flex items-center gap-2 px-5 py-2.5 border border-[oklch(0.22_0_0)] text-[oklch(0.85_0_0)] text-sm font-medium rounded-md hover:border-[oklch(0.78_0.12_85/40%)] hover:text-[oklch(0.78_0.12_85)] transition-all"
+   348→          >
+   349→            <Phone size={15} />
+   350→            0991 746 0621
+   351→          </a>
+   352→        </motion.div>
+   353→
+   354→      </motion.div>
+   355→
+   356→      {/* Scroll indicator */}
+   357→      <motion.div
+   358→        initial={{ opacity: 0 }}
+   359→        animate={{ opacity: 1 }}
+   360→        transition={{ delay: 1.2 }}
+   361→        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+   362→      >
+   363→        <motion.div
+   364→          animate={{ y: [0, 8, 0] }}
+   365→          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+   366→        >
+   367→          <ChevronDown size={18} className="text-[oklch(0.3_0_0)]" />
+   368→        </motion.div>
+   369→      </motion.div>
+   370→    </section>
+   371→  );
+   372→}
+   373→
+   374→/* ───────────────────────────────────────
+   375→   ABOUT
+   376→   ─────────────────────────────────────── */
+   377→
+   378→function About() {
+   379→  const stats = [
+   380→    { value: "3+", label: "Years of Experience" },
+   381→    { value: "2", label: "Web Apps Shipped" },
+   382→    { value: "2", label: "Cisco Certifications" },
+   383→    { value: "7+", label: "Role Targets" },
+   384→  ];
+   385→
+   386→  return (
+   387→    <section id="about" className="py-24 sm:py-32">
+   388→      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+   389→        <SectionLabel number="01" title="About" />
+   390→
+   391→        <div className="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-20">
+   392→          <FadeIn delay={0.1}>
+   393→            <p className="text-base sm:text-lg text-[oklch(0.75_0_0)] leading-relaxed max-w-2xl">
+   394→              Computer Science student at City College of Angeles with hands-on
+   395→              experience that spans more than just code. I have spent time in
+   396→              customer support roles where I learned to listen before
+   397→              troubleshooting, in newsrooms where accuracy was non-negotiable, and
+   398→              in freelance video editing where deadlines were real and clients had
+   399→              opinions. That mix means I can write a PHP backend, debug a network
+   400→              issue, edit a promo video, and draft a press release — sometimes in
+   401→              the same afternoon.
+   402→            </p>
+   403→            <p className="mt-5 text-base sm:text-lg text-[oklch(0.75_0_0)] leading-relaxed max-w-2xl">
+   404→              I am looking for entry-level work in technical support, web
+   405→              development, content operations, or virtual assistance — anywhere
+   406→              the ability to learn fast and communicate clearly actually matters.
+   407→            </p>
+   408→          </FadeIn>
+   409→
+   410→          <FadeIn delay={0.2} className="lg:pt-2">
+   411→            <div className="grid grid-cols-2 gap-6 lg:min-w-[280px]">
+   412→              {stats.map((stat) => (
+   413→                <div key={stat.label}>
+   414→                  <div className="text-3xl sm:text-4xl font-bold text-[oklch(0.78_0.12_85)] font-mono">
+   415→                    {stat.value}
+   416→                  </div>
+   417→                  <div className="text-xs sm:text-sm text-[oklch(0.50_0_0)] mt-1 leading-snug">
+   418→                    {stat.label}
+   419→                  </div>
+   420→                </div>
+   421→              ))}
+   422→            </div>
+   423→          </FadeIn>
+   424→        </div>
+   425→      </div>
+   426→    </section>
+   427→  );
+   428→}
+   429→
+   430→/* ───────────────────────────────────────
+   431→   EXPERIENCE
+   432→   ─────────────────────────────────────── */
+   433→
+   434→const experiences = [
+   435→  {
+   436→    role: "Growth Support & Lead Generation Assistant",
+   437→    company: "Freelance / Growth Team",
+   438→    period: "Mar 2026 – May 2026",
+   439→    bullets: [
+   440→      "Conducted targeted online research and organized prospect databases to drive client acquisition initiatives.",
+   441→      "Executed customer outreach campaigns using Microsoft Outlook and Mailchimp, maintaining clear communication records.",
+   442→      "Provided daily operational and administrative support to optimize team outreach workflows.",
+   443→    ],
+   444→  },
+   445→  {
+   446→    role: "Freelance Video Editor & Content Creator",
+   447→    company: "Self-Employed",
+   448→    period: "Oct 2023 – Feb 2026",
+   449→    bullets: [
+   450→      "Produced and edited promotional and social media video assets for diverse client specifications using Adobe Premiere Pro and Photoshop.",
+   451→      "Managed end-to-end client communication, asset organization, and iterative revisions while consistently meeting project deadlines.",
+   452→      "Designed custom graphics and visual supporting materials using Canva and Photoshop.",
+   453→    ],
+   454→  },
+   455→  {
+   456→    role: "News & Literary Editor",
+   457→    company: "The Phoenix (Official School Publication)",
+   458→    period: "Aug 2024 – May 2026",
+   459→    bullets: [
+   460→      "Edited and fact-checked news and literary articles for accuracy, clarity, and publication compliance.",
+   461→      "Coordinated cross-functionally with student writers and editorial staff to manage production schedules and hit strict print/digital deadlines.",
+   462→    ],
+   463→  },
+   464→];
+   465→
+   466→function Experience() {
+   467→  return (
+   468→    <section id="experience" className="py-24 sm:py-32">
+   469→      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+   470→        <SectionLabel number="02" title="Experience" />
+   471→
+   472→        <div className="space-y-0">
+   473→          {experiences.map((exp, i) => (
+   474→            <FadeIn key={i} delay={i * 0.1}>
+   475→              <div className="group relative py-8 border-t border-[oklch(0.15_0_0)] hover:border-[oklch(0.78_0.12_85/20%)] transition-colors">
+   476→                <div className="grid md:grid-cols-[200px_1fr] gap-4 md:gap-12">
+   477→                  {/* Meta column */}
+   478→                  <div className="flex flex-col gap-1.5">
+   479→                    <span className="font-mono text-xs text-[oklch(0.45_0_0)]">
+   480→                      {exp.period}
+   481→                    </span>
+   482→                    <span className="text-sm text-[oklch(0.55_0_0)]">
+   483→                      {exp.company}
+   484→                    </span>
+   485→                  </div>
+   486→
+   487→                  {/* Content column */}
+   488→                  <div>
+   489→                    <h3 className="text-lg sm:text-xl font-semibold mb-4 group-hover:text-[oklch(0.78_0.12_85)] transition-colors">
+   490→                      {exp.role}
+   491→                    </h3>
+   492→                    <ul className="space-y-2.5">
+   493→                      {exp.bullets.map((bullet, j) => (
+   494→                        <li
+   495→                          key={j}
+   496→                          className="flex gap-3 text-sm sm:text-base text-[oklch(0.65_0_0)] leading-relaxed"
+   497→                        >
+   498→                          <span className="mt-2 h-1 w-1 rounded-full bg-[oklch(0.35_0_0)] shrink-0" />
+   499→                          {bullet}
+   500→                        </li>
+   501→                      ))}
+   502→                    </ul>
+   503→                  </div>
+   504→                </div>
+   505→              </div>
+   506→            </FadeIn>
+   507→          ))}
+   508→          <div className="border-t border-[oklch(0.15_0_0)]" />
+   509→        </div>
+   510→      </div>
+   511→    </section>
+   512→  );
+   513→}
+   514→
+   515→/* ───────────────────────────────────────
+   516→   PROJECTS
+   517→   ─────────────────────────────────────── */
+   518→
+   519→const projects = [
+   520→  {
+   521→    title: "M-CARE OB-GYN Clinic Management System",
+   522→    description:
+   523→      "Web-based clinic management system featuring patient medical record storage, appointment scheduling, user authentication, and administrative analytics with a responsive interface.",
+   524→    stack: ["PHP", "MySQL", "HTML5", "CSS3", "Bootstrap", "JavaScript"],
+   525→    icon: <MonitorSmartphone size={22} />,
+   526→  },
+   527→  {
+   528→    title: "InternConnect – Internship Management Platform",
+   529→    description:
+   530→      "Platform connecting students with prospective employers. Includes user authentication, application tracking, company-student matching algorithms, and automated report generation.",
+   531→    stack: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
+   532→    icon: <Globe size={22} />,
+   533→  },
+   534→];
+   535→
+   536→function Projects() {
+   537→  return (
+   538→    <section id="projects" className="py-24 sm:py-32">
+   539→      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+   540→        <SectionLabel number="03" title="Projects" />
+   541→
+   542→        <div className="grid md:grid-cols-2 gap-6">
+   543→          {projects.map((project, i) => (
+   544→            <FadeIn key={i} delay={i * 0.12}>
+   545→              <div className="group relative h-full p-6 sm:p-8 rounded-lg border border-[oklch(0.15_0_0)] bg-[oklch(0.09_0_0)] hover:border-[oklch(0.78_0.12_85/25%)] hover:bg-[oklch(0.10_0.005_85)] transition-all duration-300">
+   546→                {/* Icon */}
+   547→                <div className="mb-5 text-[oklch(0.45_0_0)] group-hover:text-[oklch(0.78_0.12_85)] transition-colors">
+   548→                  {project.icon}
+   549→                </div>
+   550→
+   551→                {/* Title */}
+   552→                <h3 className="text-lg sm:text-xl font-semibold mb-3 group-hover:text-[oklch(0.78_0.12_85)] transition-colors">
+   553→                  {project.title}
+   554→                </h3>
+   555→
+   556→                {/* Description */}
+   557→                <p className="text-sm sm:text-base text-[oklch(0.60_0_0)] leading-relaxed mb-5">
+   558→                  {project.description}
+   559→                </p>
+   560→
+   561→                {/* Tech stack */}
+   562→                <div className="flex flex-wrap gap-2">
+   563→                  {project.stack.map((tech) => (
+   564→                    <span
+   565→                      key={tech}
+   566→                      className="px-2.5 py-1 text-xs font-mono rounded border border-[oklch(0.18_0_0)] text-[oklch(0.55_0_0)]"
+   567→                    >
+   568→                      {tech}
+   569→                    </span>
+   570→                  ))}
+   571→                </div>
+   572→
+   573→                {/* Hover arrow */}
+   574→                <div className="absolute top-6 right-6 sm:top-8 sm:right-8 opacity-0 group-hover:opacity-100 transition-opacity">
+   575→                  <ArrowUpRight
+   576→                    size={18}
+   577→                    className="text-[oklch(0.78_0.12_85)]"
+   578→                  />
+   579→                </div>
+   580→              </div>
+   581→            </FadeIn>
+   582→          ))}
+   583→        </div>
+   584→      </div>
+   585→    </section>
+   586→  );
+   587→}
+   588→
+   589→/* ───────────────────────────────────────
+   590→   SKILLS
+   591→   ─────────────────────────────────────── */
+   592→
+   593→const skillGroups = [
+   594→  {
+   595→    category: "Customer Support & Operations",
+   596→    icon: <Briefcase size={16} />,
+   597→    skills: [
+   598→      "Customer Communication",
+   599→      "Email Support",
+   600→      "Technical Troubleshooting",
+   601→      "Issue Documentation",
+   602→      "CRM Workflow",
+   603→      "Administrative Support",
+   604→      "Data Entry",
+   605→      "File Management",
+   606→    ],
+   607→  },
+   608→  {
+   609→    category: "Web Development & Technical",
+   610→    icon: <Code2 size={16} />,
+   611→    skills: [
+   612→      "HTML5",
+   613→      "CSS3",
+   614→      "JavaScript",
+   615→      "PHP",
+   616→      "MySQL",
+   617→      "Bootstrap",
+   618→      "Responsive Design",
+   619→      "CRUD Operations",
+   620→      "Git",
+   621→      "GitHub",
+   622→    ],
+   623→  },
+   624→  {
+   625→    category: "Media, Design & Content",
+   626→    icon: <Palette size={16} />,
+   627→    skills: [
+   628→      "Adobe Premiere Pro",
+   629→      "Photoshop",
+   630→      "Illustrator",
+   631→      "Figma",
+   632→      "Canva",
+   633→      "Video Editing",
+   634→      "Motion Graphics",
+   635→      "Journalism",
+   636→      "Proofreading",
+   637→      "Fact-Checking",
+   638→    ],
+   639→  },
+   640→  {
+   641→    category: "Systems, Networking & Tools",
+   642→    icon: <Shield size={16} />,
+   643→    skills: [
+   644→      "Linux",
+   645→      "Windows",
+   646→      "Basic Networking",
+   647→      "Cisco CCNA Fundamentals",
+   648→      "Google Workspace",
+   649→      "Microsoft Office",
+   650→      "Microsoft Outlook",
+   651→      "Mailchimp",
+   652→    ],
+   653→  },
+   654→];
+   655→
+   656→function Skills() {
+   657→  return (
+   658→    <section id="skills" className="py-24 sm:py-32">
+   659→      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+   660→        <SectionLabel number="04" title="Skills" />
+   661→
+   662→        <div className="grid sm:grid-cols-2 gap-8 sm:gap-10">
+   663→          {skillGroups.map((group, i) => (
+   664→            <FadeIn key={i} delay={i * 0.08}>
+   665→              <div className="flex items-start gap-3 mb-4">
+   666→                <span className="mt-0.5 text-[oklch(0.45_0_0)]">{group.icon}</span>
+   667→                <h3 className="text-base font-semibold text-[oklch(0.85_0_0)]">
+   668→                  {group.category}
+   669→                </h3>
+   670→              </div>
+   671→              <div className="flex flex-wrap gap-2 ml-7">
+   672→                {group.skills.map((skill) => (
+   673→                  <span
+   674→                    key={skill}
+   675→                    className="skill-pill px-3 py-1.5 text-xs sm:text-sm rounded-md border border-[oklch(0.16_0_0)] text-[oklch(0.60_0_0)] cursor-default"
+   676→                  >
+   677→                    {skill}
+   678→                  </span>
+   679→                ))}
+   680→              </div>
+   681→            </FadeIn>
+   682→          ))}
+   683→        </div>
+   684→      </div>
+   685→    </section>
+   686→  );
+   687→}
+   688→
+   689→/* ───────────────────────────────────────
+   690→   EDUCATION & CERTIFICATIONS
+   691→   ─────────────────────────────────────── */
+   692→
+   693→function Education() {
+   694→  return (
+   695→    <section id="education" className="py-24 sm:py-32">
+   696→      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+   697→        <SectionLabel number="05" title="Education" />
+   698→
+   699→        <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
+   700→          {/* Education */}
+   701→          <FadeIn delay={0.1}>
+   702→            <div className="space-y-8">
+   703→              <div>
+   704→                <div className="flex items-start gap-3 mb-2">
+   705→                  <GraduationCap
+   706→                    size={18}
+   707→                    className="mt-1 text-[oklch(0.45_0_0)]"
+   708→                  />
+   709→                  <div>
+   710→                    <h3 className="text-lg font-semibold">
+   711→                      City College of Angeles
+   712→                    </h3>
+   713→                    <p className="text-sm text-[oklch(0.55_0_0)]">
+   714→                      Bachelor of Science in Computer Science
+   715→                    </p>
+   716→                    <p className="font-mono text-xs text-[oklch(0.40_0_0)] mt-1">
+   717→                      Aug 2023 – Present
+   718→                    </p>
+   719→                  </div>
+   720→                </div>
+   721→                <div className="ml-7 mt-3">
+   722→                  <p className="text-xs font-mono text-[oklch(0.40_0_0)] mb-2">
+   723→                    Relevant Coursework
+   724→                  </p>
+   725→                  <div className="flex flex-wrap gap-1.5">
+   726→                    {["Data Structures", "Algorithms", "Database Management", "Computer Networking", "Software Engineering"].map(
+   727→                      (c) => (
+   728→                        <span
+   729→                          key={c}
+   730→                          className="px-2 py-0.5 text-xs rounded border border-[oklch(0.15_0_0)] text-[oklch(0.50_0_0)]"
+   731→                        >
+   732→                          {c}
+   733→                        </span>
+   734→                      )
+   735→                    )}
+   736→                  </div>
+   737→                </div>
+   738→              </div>
+   739→
+   740→              <div className="border-t border-[oklch(0.13_0_0)] pt-8">
+   741→                <div className="flex items-start gap-3">
+   742→                  <GraduationCap
+   743→                    size={18}
+   744→                    className="mt-1 text-[oklch(0.45_0_0)]"
+   745→                  />
+   746→                  <div>
+   747→                    <h3 className="text-lg font-semibold">
+   748→                      Gov. Rafael L. Lazatin Integrated School
+   749→                    </h3>
+   750→                    <p className="text-sm text-[oklch(0.55_0_0)]">
+   751→                      General Academic Strand (High School)
+   752→                    </p>
+   753→                    <p className="font-mono text-xs text-[oklch(0.40_0_0)] mt-1">
+   754→                      Aug 2021 – Jun 2023
+   755→                    </p>
+   756→                    <div className="mt-2">
+   757→                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded bg-[oklch(0.78_0.12_85/10%)] text-[oklch(0.78_0.12_85)] border border-[oklch(0.78_0.12_85/20%)]">
+   758→                        <Award size={12} />
+   759→                        Graduated With High Honors
+   760→                      </span>
+   761→                    </div>
+   762→                  </div>
+   763→                </div>
+   764→              </div>
+   765→            </div>
+   766→          </FadeIn>
+   767→
+   768→          {/* Certifications & Languages */}
+   769→          <div className="space-y-8">
+   770→            <FadeIn delay={0.2}>
+   771→              <div>
+   772→                <div className="flex items-start gap-3 mb-4">
+   773→                  <Award size={18} className="mt-1 text-[oklch(0.45_0_0)]" />
+   774→                  <h3 className="text-lg font-semibold">Certifications</h3>
+   775→                </div>
+   776→                <div className="ml-7 space-y-3">
+   777→                  <div className="p-4 rounded-lg border border-[oklch(0.15_0_0)] bg-[oklch(0.08_0_0)]">
+   778→                    <p className="text-sm font-medium">
+   779→                      Cisco Networking Academy
+   780→                    </p>
+   781→                    <p className="text-xs text-[oklch(0.50_0_0)] mt-1">
+   782→                      IT Essentials
+   783→                    </p>
+   784→                  </div>
+   785→                  <div className="p-4 rounded-lg border border-[oklch(0.15_0_0)] bg-[oklch(0.08_0_0)]">
+   786→                    <p className="text-sm font-medium">
+   787→                      Cisco Networking Academy
+   788→                    </p>
+   789→                    <p className="text-xs text-[oklch(0.50_0_0)] mt-1">
+   790→                      CCNAv7: Introduction to Networks
+   791→                    </p>
+   792→                  </div>
+   793→                </div>
+   794→              </div>
+   795→            </FadeIn>
+   796→
+   797→            <FadeIn delay={0.3}>
+   798→              <div className="border-t border-[oklch(0.13_0_0)] pt-8">
+   799→                <div className="flex items-start gap-3 mb-4">
+   800→                  <Globe size={18} className="mt-1 text-[oklch(0.45_0_0)]" />
+   801→                  <h3 className="text-lg font-semibold">Languages</h3>
+   802→                </div>
+   803→                <div className="ml-7 space-y-3">
+   804→                  <div className="flex items-center justify-between">
+   805→                    <span className="text-sm">English</span>
+   806→                    <span className="text-xs text-[oklch(0.50_0_0)]">
+   807→                      Professional Working
+   808→                    </span>
+   809→                  </div>
+   810→                  <div className="h-1.5 rounded-full bg-[oklch(0.13_0_0)] overflow-hidden">
+   811→                    <div className="h-full w-[85%] rounded-full bg-[oklch(0.78_0.12_85/60%)]" />
+   812→                  </div>
+   813→                  <div className="flex items-center justify-between mt-4">
+   814→                    <span className="text-sm">Filipino</span>
+   815→                    <span className="text-xs text-[oklch(0.50_0_0)]">
+   816→                      Native / Bilingual
+   817→                    </span>
+   818→                  </div>
+   819→                  <div className="h-1.5 rounded-full bg-[oklch(0.13_0_0)] overflow-hidden">
+   820→                    <div className="h-full w-full rounded-full bg-[oklch(0.78_0.12_85/60%)]" />
+   821→                  </div>
+   822→                </div>
+   823→              </div>
+   824→            </FadeIn>
+   825→          </div>
+   826→        </div>
+   827→      </div>
+   828→    </section>
+   829→  );
+   830→}
+   831→
+   832→/* ───────────────────────────────────────
+   833→   FOOTER
+   834→   ─────────────────────────────────────── */
+   835→
+   836→function Footer() {
+   837→  return (
+   838→    <footer className="py-16 border-t border-[oklch(0.13_0_0)]">
+   839→      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+   840→        <div className="grid sm:grid-cols-[1fr_auto] gap-8 items-start">
+   841→          <div>
+   842→            <p className="font-mono text-xs tracking-wider text-[oklch(0.78_0.12_85)] mb-3">
+   843→              06 — CONTACT
+   844→            </p>
+   845→            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-4">
+   846→              Let&apos;s work together.
+   847→            </h2>
+   848→            <p className="text-sm text-[oklch(0.55_0_0)] max-w-md leading-relaxed">
+   849→              If you are looking for someone who can handle technical tasks, talk
+   850→              to customers without sounding like a robot, and actually meet
+   851→              deadlines — reach out.
+   852→            </p>
+   853→          </div>
+   854→
+   855→          <div className="flex flex-col gap-3 sm:items-end">
+   856→            <a
+   857→              href="mailto:dposadas003@gmail.com"
+   858→              className="inline-flex items-center gap-2 text-sm text-[oklch(0.75_0_0)] hover:text-[oklch(0.78_0.12_85)] accent-underline transition-colors"
+   859→            >
+   860→              <Mail size={14} />
+   861→              dposadas003@gmail.com
+   862→            </a>
+   863→            <a
+   864→              href="tel:09917460621"
+   865→              className="inline-flex items-center gap-2 text-sm text-[oklch(0.75_0_0)] hover:text-[oklch(0.78_0.12_85)] accent-underline transition-colors"
+   866→            >
+   867→              <Phone size={14} />
+   868→              0991 746 0621
+   869→            </a>
+   870→            <a
+   871→              href="https://linkedin.com/in/daniel-posadas-4237582b9"
+   872→              target="_blank"
+   873→              rel="noopener noreferrer"
+   874→              className="inline-flex items-center gap-2 text-sm text-[oklch(0.75_0_0)] hover:text-[oklch(0.78_0.12_85)] accent-underline transition-colors"
+   875→            >
+   876→              <Linkedin size={14} />
+   877→              LinkedIn
+   878→            </a>
+   879→            <a
+   880→              href="#"
+   881→              className="inline-flex items-center gap-2 text-sm text-[oklch(0.75_0_0)] hover:text-[oklch(0.78_0.12_85)] accent-underline transition-colors"
+   882→            >
+   883→              <MapPin size={14} />
+   884→              Angeles City, Pampanga
+   885→            </a>
+   886→          </div>
+   887→        </div>
+   888→
+   889→        <div className="mt-14 pt-6 border-t border-[oklch(0.10_0_0)] flex flex-col sm:flex-row items-center justify-between gap-4">
+   890→          <p className="font-mono text-xs text-[oklch(0.30_0_0)]">
+   891→            Daniel Posadas
+   892→          </p>
+   893→          <p className="font-mono text-xs text-[oklch(0.30_0_0)]">
+   894→            Built with Next.js & Tailwind CSS
+   895→          </p>
+   896→        </div>
+   897→      </div>
+   898→    </footer>
+   899→  );
+   900→}
+   901→
+   902→/* ───────────────────────────────────────
+   903→   PAGE
+   904→   ─────────────────────────────────────── */
+   905→
+   906→export default function PortfolioPage() {
+   907→  return (
+   908→    <div className="min-h-screen flex flex-col">
+   909→      <Navigation />
+   910→      <main className="flex-1">
+   911→        <Hero />
+   912→        <About />
+   913→        <Experience />
+   914→        <Projects />
+   915→        <Skills />
+   916→        <Education />
+   917→      </main>
+   918→      <Footer />
+   919→    </div>
+   920→  );
+   921→}
+   922→
