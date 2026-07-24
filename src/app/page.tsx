@@ -215,6 +215,9 @@ function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 0.5], [0, 60]);
 
+  // ← Replace this string with your actual image path, e.g. "/my-photo.jpg" in /public
+  const profilePhoto = "";
+
   return (
     <section
       ref={heroRef}
@@ -242,21 +245,54 @@ function Hero() {
         style={{ opacity, y }}
         className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 pt-24 pb-16 w-full"
       >
-        {/* Status badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex items-center gap-2.5 mb-8"
-        >
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
-          </span>
-          <span className="font-mono text-xs tracking-wider text-[oklch(0.55_0_0)]">
-            Available for work
-          </span>
-        </motion.div>
+        {/* Photo card + Status badge row */}
+        <div className="flex items-center gap-5 mb-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+            className="shrink-0"
+          >
+            {profilePhoto ? (
+              <img
+                src={profilePhoto}
+                alt="Daniel Posadas"
+                className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] rounded-full object-cover ring-2 ring-[oklch(0.78_0.12_85/50%)] ring-offset-2 ring-offset-[oklch(0.07_0_0)]"
+              />
+            ) : (
+              <div className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] rounded-full bg-[oklch(0.13_0_0)] border border-[oklch(0.20_0_0)] flex items-center justify-center ring-2 ring-[oklch(0.78_0.12_85/25%)] ring-offset-2 ring-offset-[oklch(0.07_0_0)]">
+                <span className="text-xl sm:text-2xl font-bold text-[oklch(0.78_0.12_85)] font-mono select-none">
+                  DP
+                </span>
+              </div>
+            )}
+          </motion.div>
+
+          <div className="flex flex-col gap-1.5">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.12 }}
+              className="flex items-center gap-2.5"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              <span className="font-mono text-xs tracking-wider text-[oklch(0.55_0_0)]">
+                Available for work
+              </span>
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.18 }}
+              className="font-mono text-xs tracking-wider text-[oklch(0.40_0_0)]"
+            >
+              Angeles City, Pampanga, Philippines
+            </motion.p>
+          </div>
+        </div>
 
         {/* Name */}
         <div className="mb-6">
@@ -315,16 +351,6 @@ function Hero() {
           </a>
         </motion.div>
 
-        {/* Location */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex items-center gap-2 mt-8 text-[oklch(0.45_0_0)] font-mono text-xs tracking-wider"
-        >
-          <MapPin size={12} />
-          Angeles City, Pampanga, Philippines
-        </motion.div>
       </motion.div>
 
       {/* Scroll indicator */}
