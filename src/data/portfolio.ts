@@ -40,7 +40,7 @@ export const personalInfo = {
 
 export const heroParagraph = `Customer support specialist and content editor who builds practical software. Background in troubleshooting, editing, and administrative work means clear communication and strong problem-solving skills — applied to every project.`;
 
-export const aboutParagraph = `Daniel Posadas is a Computer Science student and support professional based in the Philippines. He builds practical, maintainable software and adapts quickly to new tools and technologies. His experience spans technical support, freelance web development, content editing, and administrative roles — giving him a broad perspective on how technology serves real people. He values clean interfaces, straightforward communication, and solutions that actually work.`;
+export const aboutParagraph = `I'm Daniel Posadas — a Computer Science student and support professional based in the Philippines. I build practical, maintainable software and adapt quickly to new tools and technologies. My experience spans technical support, freelance web development, content editing, and administrative roles, giving me a broad perspective on how technology serves real people. I value clean interfaces, straightforward communication, and solutions that actually work.`;
 
 export const experience: ExperienceItem[] = [
   {
