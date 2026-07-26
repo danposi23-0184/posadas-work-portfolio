@@ -216,7 +216,7 @@ function Hero() {
   const y = useTransform(scrollYProgress, [0, 0.5], [0, 60]);
 
   // ← Replace this string with your actual image path, e.g. "/my-photo.jpg" in /public
-  const profilePhoto = "";
+  const profilePhoto = "true";
 
   return (
     <section
@@ -344,13 +344,13 @@ function Hero() {
               {/* Gold accent top bar */}
               <div className="h-1 bg-[oklch(0.78_0.12_85)]" />
 
-              {profilePhoto ? (
+              
                 <img
                   src="images/picopme.jpeg"
                   alt="Daniel Posadas"
                   className="w-full aspect-[3/4] object-cover"
                 />
-              ) : (
+               : (
                 <div className="w-full aspect-[3/4] flex flex-col items-center justify-center gap-4 bg-[oklch(0.10_0_0)]">
                   <div className="w-20 h-20 rounded-full bg-[oklch(0.15_0_0)] border border-[oklch(0.22_0_0)] flex items-center justify-center">
                     <span className="text-3xl font-bold text-[oklch(0.78_0.12_85)] font-mono select-none">
@@ -366,7 +366,7 @@ function Hero() {
                     <span className="font-mono text-[10px] tracking-wider">Pampanga, PH</span>
                   </div>
                 </div>
-              )}
+              )
 
               {/* Bottom info bar */}
               <div className="px-4 py-3 border-t border-[oklch(0.16_0_0)] flex items-center justify-between">
