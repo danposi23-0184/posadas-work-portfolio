@@ -23,9 +23,15 @@ export default function Certifications() {
                 delay: index * 0.1,
                 ease: transitionEasing,
               }}
-              className="flex items-start gap-4 rounded-lg border border-border bg-surface p-5"
+              className="flex items-start gap-4 rounded-xl border border-border bg-surface p-5 transition-colors duration-300 hover:border-border/60"
             >
-              <Award size={20} className="mt-0.5 shrink-0 text-accent" />
+              <motion.span
+                whileHover={{ rotate: 3 }}
+                transition={{ duration: 0.2 }}
+                className="mt-0.5 shrink-0"
+              >
+                <Award size={20} className="text-accent" />
+              </motion.span>
               <div>
                 <h3 className="text-sm font-medium text-primary">
                   {cert.name}

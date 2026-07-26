@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import SectionTitle from "./SectionTitle";
 import { aboutParagraph } from "@/data/portfolio";
-import { transitionEasing } from "@/lib/utils";
+import { sectionVariants } from "@/lib/utils";
 
 export default function About() {
   return (
@@ -11,13 +11,15 @@ export default function About() {
       <div className="mx-auto max-w-[1200px]">
         <SectionTitle>About</SectionTitle>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: transitionEasing }}
           className="max-w-2xl"
         >
-          <p className="leading-relaxed text-secondary">{aboutParagraph}</p>
+          <p className="text-base leading-relaxed text-secondary sm:text-lg">
+            {aboutParagraph}
+          </p>
         </motion.div>
       </div>
     </section>

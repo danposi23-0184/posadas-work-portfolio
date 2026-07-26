@@ -7,7 +7,7 @@ export default function Footer() {
         <p className="text-xs text-secondary">
           &copy; {new Date().getFullYear()} {personalInfo.name}
         </p>
-        <p className="text-xs text-secondary/60">
+        <p className="text-xs text-secondary/50">
           Built from scratch with Next.js
         </p>
       </div>

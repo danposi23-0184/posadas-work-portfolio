@@ -32,16 +32,16 @@ export default function Experience() {
                 <div className="absolute left-[-4px] top-1.5 h-2.5 w-2.5 rounded-full bg-accent md:left-[26px]" />
 
                 <div>
-                  <h3 className="text-lg font-medium text-primary">
+                  <h3 className="text-lg font-medium tracking-tight text-primary">
                     {item.title}
                   </h3>
-                  <p className="mt-0.5 text-sm text-accent">
+                  <p className="mt-0.5 text-sm font-normal text-accent">
                     {item.organization}
                   </p>
                   <span className="mt-1 block text-xs text-secondary">
                     {item.dates}
                   </span>
-                  <p className="mt-3 max-w-lg leading-relaxed text-secondary">
+                  <p className="mt-3 max-w-lg text-sm leading-relaxed text-secondary">
                     {item.description}
                   </p>
                 </div>

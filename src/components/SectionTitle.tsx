@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { transitionEasing } from "@/lib/utils";
+import { sectionVariants } from "@/lib/utils";
 
 interface SectionTitleProps {
   children: React.ReactNode;
@@ -10,16 +10,16 @@ interface SectionTitleProps {
 export default function SectionTitle({ children }: SectionTitleProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, ease: transitionEasing }}
-      className="mb-12"
+      className="mb-14"
     >
-      <h2 className="text-2xl font-semibold text-primary sm:text-3xl">
+      <h2 className="text-3xl font-medium leading-tight tracking-tight text-primary sm:text-4xl">
         {children}
       </h2>
-      <div className="mt-3 h-0.5 w-10 bg-accent" />
+      <div className="mt-4 h-px w-10 bg-accent" />
     </motion.div>
   );
 }

@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: `${personalInfo.name} | Portfolio`,
-  description: `${personalInfo.name} — Computer Science Student, Technical Support Specialist, and Frontend Developer. Portfolio showcasing projects and experience.`,
+  description: `${personalInfo.name} — Customer Support Specialist and Content Editor. Portfolio showcasing projects and experience.`,
   openGraph: {
     title: `${personalInfo.name} | Portfolio`,
     description: `${personalInfo.titles.join(" — ")}`,
@@ -30,7 +30,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500;600;700&display=swap"
           rel="stylesheet"
           crossOrigin="anonymous"
         />

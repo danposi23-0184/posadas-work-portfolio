@@ -25,10 +25,12 @@ export default function Education() {
               className="relative pl-6"
             >
               <div className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-accent" />
-              <h3 className="text-lg font-medium text-primary">
+              <h3 className="text-lg font-medium tracking-tight text-primary">
                 {item.degree}
               </h3>
-              <p className="mt-0.5 text-sm text-accent">{item.school}</p>
+              <p className="mt-0.5 text-sm font-normal text-accent">
+                {item.school}
+              </p>
               <span className="mt-1 block text-xs text-secondary">
                 {item.dates}
               </span>

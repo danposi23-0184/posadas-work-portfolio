@@ -12,7 +12,7 @@ export default function Skills() {
     <section id="skills" className="border-t border-border px-6 py-24">
       <div className="mx-auto max-w-[1200px]">
         <SectionTitle>Skills</SectionTitle>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map(([category, items], index) => (
             <motion.div
               key={category}
@@ -25,10 +25,10 @@ export default function Skills() {
                 ease: transitionEasing,
               }}
             >
-              <h3 className="text-sm font-medium tracking-wider text-accent uppercase">
+              <h3 className="text-xs font-medium tracking-[0.12em] text-accent uppercase">
                 {category}
               </h3>
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-4 space-y-1.5">
                 {items.map((skill) => (
                   <li
                     key={skill}

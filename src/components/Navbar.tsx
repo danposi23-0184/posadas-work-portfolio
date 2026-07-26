@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { personalInfo, navLinks } from "@/data/portfolio";
 import { transitionEasing } from "@/lib/utils";
 
@@ -29,7 +29,10 @@ export default function Navbar() {
   };
 
   return (
-    <header
+    <motion.header
+      initial={{ opacity: 0, y: -16, filter: "blur(4px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.6, ease: transitionEasing }}
       className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
         scrolled
           ? "border-b border-border bg-background/90 backdrop-blur-lg"
@@ -41,7 +44,7 @@ export default function Navbar() {
         <a
           href="#"
           onClick={(e) => handleNavClick(e, "#")}
-          className="text-sm font-medium tracking-widest text-primary uppercase"
+          className="text-sm font-medium tracking-[0.15em] text-primary uppercase"
         >
           {personalInfo.initials}
         </a>
@@ -53,18 +56,24 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="text-sm text-secondary transition-colors duration-200 hover:text-primary"
+              className="group relative text-sm text-secondary transition-colors duration-200 hover:text-primary"
             >
               {link.label}
+              {/* Animated underline */}
+              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-accent transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
           <a
             href={personalInfo.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded border border-accent/40 px-4 py-1.5 text-sm text-accent transition-all duration-200 hover:border-accent hover:bg-accent/10"
+            className="group inline-flex items-center gap-2 rounded-xl border border-accent/40 px-4 py-1.5 text-sm text-accent transition-all duration-200 hover:border-accent hover:bg-accent/10"
           >
-            Resume
+            <span>Resume</span>
+            <ArrowRight
+              size={14}
+              className="transition-transform duration-200 group-hover:translate-x-0.5"
+            />
           </a>
         </div>
 
@@ -94,23 +103,28 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="text-sm text-secondary transition-colors duration-200 hover:text-primary"
+                  className="group relative text-sm text-secondary transition-colors duration-200 hover:text-primary"
                 >
                   {link.label}
+                  <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-accent transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
               <a
                 href={personalInfo.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-block self-start rounded border border-accent/40 px-4 py-1.5 text-sm text-accent transition-all duration-200 hover:border-accent hover:bg-accent/10"
+                className="group mt-2 inline-flex w-fit items-center gap-2 self-start rounded-xl border border-accent/40 px-4 py-1.5 text-sm text-accent transition-all duration-200 hover:border-accent hover:bg-accent/10"
               >
-                Resume
+                <span>Resume</span>
+                <ArrowRight
+                  size={14}
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                />
               </a>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }
