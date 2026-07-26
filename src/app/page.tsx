@@ -2,6 +2,7 @@
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Mail,
   Phone,
@@ -346,7 +347,7 @@ function Hero() {
 
               
                 <img
-                  src="images/picopme.jpeg"
+                  src="/images/picopme.jpeg"
                   alt="Daniel Posadas"
                   className="w-full aspect-[3/4] object-cover"
                 />
