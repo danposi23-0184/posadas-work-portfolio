@@ -346,12 +346,14 @@ function Hero() {
               <div className="h-1 bg-[oklch(0.78_0.12_85)]" />
 
               
-                <img
+                <Image
                   src="/images/picopme.jpeg"
                   alt="Daniel Posadas"
+                  width={240}
+                  height={320}
                   className="w-full aspect-[3/4] object-cover"
                 />
-               : (
+              
                 <div className="w-full aspect-[3/4] flex flex-col items-center justify-center gap-4 bg-[oklch(0.10_0_0)]">
                   <div className="w-20 h-20 rounded-full bg-[oklch(0.15_0_0)] border border-[oklch(0.22_0_0)] flex items-center justify-center">
                     <span className="text-3xl font-bold text-[oklch(0.78_0.12_85)] font-mono select-none">
