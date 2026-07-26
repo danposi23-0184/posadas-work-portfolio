@@ -296,8 +296,7 @@ function Hero() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-lg sm:text-xl text-[oklch(0.62_0_0)] max-w-lg mb-10 leading-relaxed"
             >
-              CS student who builds things for the web, edits content that
-              people actually read, and keeps customers from leaving.
+              Computer Science undergraduate from Philippines. I am a developer, content creator, and aspiring technical support professional.
             </motion.p>
 
             {/* Contact row */}
@@ -347,7 +346,7 @@ function Hero() {
 
               {profilePhoto ? (
                 <img
-                  src={profilePhoto}
+                  src="images/picopme.jpeg"
                   alt="Daniel Posadas"
                   className="w-full aspect-[3/4] object-cover"
                 />
@@ -360,7 +359,7 @@ function Hero() {
                   </div>
                   <div className="text-center px-4">
                     <p className="text-sm font-medium text-[oklch(0.75_0_0)]">Daniel Posadas</p>
-                    <p className="text-xs text-[oklch(0.45_0_0)] mt-1">CS Student & Developer</p>
+                    <p className="text-xs text-[oklch(0.45_0_0)] mt-1">Computer Science & Developer</p>
                   </div>
                   <div className="flex items-center gap-2 text-[oklch(0.40_0_0)]">
                     <MapPin size={10} />
